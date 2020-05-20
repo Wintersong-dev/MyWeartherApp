@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <TableRow>
+        <TextView android:text="@string/str_settings_darktheme"/>
+        <Switch
+            android:id="@+id/settings_dark_theme_switch"
+            android:layout_gravity="start"
+            android:paddingStart="15dp"/>
+    </TableRow>
+    <TableRow>
+        <TextView android:text="@string/str_setting_lang"/>
+        <Spinner
+            android:entries="@array/str_list_languages"
+            android:paddingStart="15dp"/>
+    </TableRow>
+</TableLayout>

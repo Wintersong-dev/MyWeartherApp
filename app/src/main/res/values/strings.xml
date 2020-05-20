@@ -1,9 +1,24 @@
 <resources>
     <string name="app_name">MyWeatherApp</string>
-    <string name="str_location">Санкт-Петербург</string>
+    <string name="str_city_spb">Санкт-Петербург</string>
     <string name="str_datetime">17.05.2020 11:00:00</string>
     <string name="str_degrees">+25С</string>
     <string name="str_fallout">Без осадков</string>
     <string name="str_pressure">Атм. давление 750 мм. рт ст.</string>
     <string name="str_humidity">Отн. влажность 55%</string>
+    <string name="str_city_ekb">Екатеринбург</string>
+    <string name="str_city_msk">Москва</string>
+    <string name="str_city_krd">Краснодар</string>
+    <string name="str_city_kld">Калининград</string>
+    <string name="str_city_tlt">Тольятти</string>
+    <string name="str_city_vdk">Владивосток</string>
+    <string name="str_city_pick_hint">Введите интересующий Вас город</string>
+    <string name="str_setting_lang">Язык</string>
+    <string name="str_settings_darktheme">Темная тема</string>
+    <string name="str_settings_more_info">Отображать скорость ветра и давление</string>
+
+    <string-array name="str_list_languages">
+        <item>Русский</item>
+        <item>Английский</item>
+    </string-array>
 </resources>
