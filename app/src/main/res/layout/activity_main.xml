@@ -7,12 +7,53 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/tv_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="16dp"
+        android:text="@string/str_location"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_datetime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/str_datetime"
+        app:layout_constraintEnd_toEndOf="@+id/tv_location"
+        app:layout_constraintStart_toStartOf="@+id/tv_location"
+        app:layout_constraintTop_toBottomOf="@+id/tv_location" />
+
+    <TextView
+        android:id="@+id/tv_degrees"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/str_degrees"
+        android:textSize="60sp"
+        app:layout_constraintEnd_toEndOf="@+id/tv_datetime"
+        app:layout_constraintStart_toStartOf="@+id/tv_datetime"
+        app:layout_constraintTop_toBottomOf="@+id/tv_datetime" />
+
+    <TextView
+        android:id="@+id/tv_fallout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/str_fallout"
+        app:layout_constraintEnd_toEndOf="@+id/tv_degrees"
+        app:layout_constraintStart_toStartOf="@+id/tv_degrees"
+        app:layout_constraintTop_toBottomOf="@+id/tv_degrees" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/day_picker"
+        android:layout_width="409dp"
+        android:layout_height="521dp"
+        android:layout_marginTop="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_fallout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">MyWeartherApp</string>
+    <string name="app_name">MyWeatherApp</string>
+    <string name="str_location">Санкт-Петербург</string>
+    <string name="str_datetime">17.05.2020 11:00:00</string>
+    <string name="str_degrees">+25С</string>
+    <string name="str_fallout">Без осадков</string>
+    <string name="str_pressure">Атм. давление 750 мм. рт ст.</string>
+    <string name="str_humidity">Отн. влажность 55%</string>
 </resources>
