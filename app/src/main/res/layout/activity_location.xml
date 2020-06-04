@@ -3,87 +3,11 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/location_container"
+        android:layout_height="0dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/et_pick_city"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:layout_weight="100"
-            android:inputType="textPersonName"
-            android:hint="@string/str_city_pick_hint" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/btn_pick_city"
-            android:text="@string/str_ok" />
-    </LinearLayout>
-
-    <CheckBox
-        android:id="@+id/cb_more_info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/str_settings_more_info" />
-
-    <LinearLayout
-        android:orientation="vertical" android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/tv_city_msk"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="@string/str_city_msk"/>
-
-        <TextView
-            android:id="@+id/tv_city_spb"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="@string/str_city_spb"/>
-
-        <TextView
-            android:id="@+id/tv_city_ekb"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="@string/str_city_ekb"/>
-
-        <TextView
-            android:id="@+id/tv_city_krd"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="@string/str_city_krd"/>
-
-        <TextView
-            android:id="@+id/tv_city_kld"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="@string/str_city_kld"/>
-
-        <TextView
-            android:id="@+id/tv_city_tlt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="@string/str_city_tlt"/>
-
-        <TextView
-            android:id="@+id/tv_city_vdk"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="@string/str_city_vdk"/>
-
-    </LinearLayout>
+        android:layout_weight="1"
+        android:background="?android:attr/detailsElementBackground"/>
 
 </LinearLayout>
