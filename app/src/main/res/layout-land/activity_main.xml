@@ -20,11 +20,10 @@
         android:id="@+id/tv_datetime"
         android:layout_width="140dp"
         android:layout_height="20dp"
-        android:layout_marginStart="28dp"
         android:text="@string/str_datetime"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/tv_location"
+        app:layout_constraintHorizontal_bias="0.106"
+        app:layout_constraintStart_toEndOf="@+id/iv_city_info"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -64,6 +63,16 @@
         android:text="@string/str_humidity"
         app:layout_constraintBottom_toBottomOf="@+id/tv_degrees"
         app:layout_constraintStart_toStartOf="@+id/tv_pressure" />
+
+    <ImageView
+        android:id="@+id/iv_city_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_location"
+        app:layout_constraintStart_toEndOf="@+id/tv_location"
+        app:layout_constraintTop_toTopOf="@+id/tv_location"
+        app:srcCompat="@android:drawable/ic_menu_info_details" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/day_picker"
