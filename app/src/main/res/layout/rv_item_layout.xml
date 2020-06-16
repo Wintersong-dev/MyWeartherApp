@@ -9,11 +9,8 @@
         android:id="@+id/rv_item_value"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
+        android:text=""
+        style="@style/RecyclerViewItemStyle"
         tools:layout_editor_absoluteX="154dp"
         tools:layout_editor_absoluteY="57dp" />
 </FrameLayout>

@@ -1,11 +1,17 @@
 package com.example.myweartherapp.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,15 +23,18 @@ import com.example.myweartherapp.DataPack;
 import com.example.myweartherapp.R;
 import com.example.myweartherapp.RVClickListener;
 import com.example.myweartherapp.adapters.WeatherRVAdapter;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class LocationFragment extends Fragment implements RVClickListener {
-    public static final String CURRENT_LOCATION_KEY = "CurrentLocation";
-
+    private static final String LOG_TAG = "WEATHER_DEBUG";
+    public static final String ARGUMENT_DATA_PACK = "DataPack";
+    TextInputEditText tiet;
     private RecyclerView recyclerView;
     private ArrayList<String> locationList;
+    WeatherRVAdapter adapter;
 
     private DataPack arg;
 
@@ -48,31 +57,72 @@ public class LocationFragment extends Fragment implements RVClickListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        
+
         initViews(view);
-        initList();
         initDataPack();
+        initList();
+
+        setOnAddLocationClickListener();
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void setOnAddLocationClickListener() {
+        tiet.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                processClick();
+                v.setText("");
+                return false;
+            }
+        });
+
+        tiet.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_RIGHT = 2;
+
+                if(event.getAction() == MotionEvent.ACTION_UP) {
+                    if(event.getRawX() >= (tiet.getRight() - tiet.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        processClick();
+
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+    }
+
+    private void processClick() {
+        String text = tiet.getText().toString();
+        if (!text.equals("")) {
+            addLocationToRecyclerView(text);
+        }
     }
 
     private void initViews(View view) {
         recyclerView = view.findViewById(R.id.rv_city_list);
+        tiet = view.findViewById(R.id.et_location_add);
     }
 
     private void initList() {
-        locationList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.arr_city_list)));
+        locationList = arg.getLocations();
         LinearLayoutManager mgr = new LinearLayoutManager(getContext());
-        WeatherRVAdapter adapter = new WeatherRVAdapter(locationList, this);
+        adapter = new WeatherRVAdapter(locationList, this);
 
         recyclerView.setLayoutManager(mgr);
         recyclerView.setAdapter(adapter);
+
+        adapter.setCurrentPosition(getLocationPosition());
+        adapter.processSelection();
     }
 
     @Override
     public void onItemClicked(View v, int pos) {
 
+        arg.setLocationPosition(pos);
         Intent intent = new Intent();
-        intent.putExtra(CURRENT_LOCATION_KEY, locationList.get(pos));
-
+        intent.putExtra(ARGUMENT_DATA_PACK, arg);
         getActivity().setResult(Activity.RESULT_OK, intent);
         getActivity().finish();
     }
@@ -81,5 +131,14 @@ public class LocationFragment extends Fragment implements RVClickListener {
         if (getArguments() != null) {
             arg = (DataPack) getArguments().getSerializable("index");
         }
+    }
+
+    private int getLocationPosition() {
+        return arg.getLocationPosition();
+    }
+
+    private void addLocationToRecyclerView(String text) {
+        arg.addLocation(text);
+        adapter.notifyItemInserted(arg.getLocationCount());
     }
 }
