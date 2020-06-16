@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="arr_city_list">
+        <item>Москва</item>
+        <item>Санкт-Петербург</item>
+        <item>Екатеринбург</item>
+        <item>Краснодар</item>
+        <item>Калининград</item>
+        <item>Тольятти</item>
+        <item>Владивосток</item>
+    </string-array>
+    <string-array name="arr_date_list">
+        <item>01.06.2020</item>
+        <item>02.06.2020</item>
+        <item>03.06.2020</item>
+        <item>04.06.2020</item>
+        <item>05.06.2020</item>
+        <item>06.06.2020</item>
+        <item>07.06.2020</item>
+    </string-array>
+    <string-array name="arr_date_history">
+        <item>31.05.2020</item>
+        <item>30.05.2020</item>
+        <item>29.05.2020</item>
+        <item>28.05.2020</item>
+        <item>27.05.2020</item>
+        <item>26.05.2020</item>
+        <item>25.05.2020</item>
+    </string-array>
+</resources>
