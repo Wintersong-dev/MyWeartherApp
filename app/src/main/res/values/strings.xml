@@ -18,6 +18,8 @@
     <string name="str_settings_more_info">Отображать скорость ветра и давление</string>
     <string name="str_ok">OK</string>
     <string name="empty_list">Empty List</string>
+    <string name="location_add">Добавить город</string>
+    <string name="ok">ОК</string>
 
     <string-array name="str_list_languages">
         <item>Русский</item>

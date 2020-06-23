@@ -3,6 +3,7 @@ package com.example.myweartherapp.fragments;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,14 +27,17 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public class DatesFragment extends Fragment implements RVClickListener {
+    private static final String LOG_TAG = "WEATHER_DEBUG";
     private static final String CURRENT_DATE_KEY = "CurrentDate";
+    private static final String CURRENT_LOCATION_KEY = "CurrentLocation";
     public static final String DATA_PACK_PASSED_TO_ACTIVITY_KEY = "DataPackPassedToActivity";
 
     private RecyclerView recyclerView;
 
     private WeatherRVAdapter adapter = null;
     private boolean isOrientationLandscape;
-    private int currentPosition;
+    private int datePosition = 0;
+    private int locationPosition = 0;
 
     @Nullable
     @Override
@@ -50,6 +54,7 @@ public class DatesFragment extends Fragment implements RVClickListener {
 
         // Готовим RecyclerView
         initList();
+
     }
 
     @Override
@@ -59,30 +64,34 @@ public class DatesFragment extends Fragment implements RVClickListener {
         isOrientationLandscape = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
 
         if (savedInstanceState != null) {
-            currentPosition = savedInstanceState.getInt(CURRENT_DATE_KEY, 0);
+            datePosition = savedInstanceState.getInt(CURRENT_DATE_KEY, 0);
+            locationPosition = savedInstanceState.getInt(CURRENT_LOCATION_KEY, 0);
 
             if (adapter != null) {
+                adapter.setCurrentPosition(datePosition);
                 adapter.processSelection();
             }
         }
+
+        showWeatherDetails(true);
+
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putInt(CURRENT_DATE_KEY, currentPosition);
+        outState.putInt(CURRENT_DATE_KEY, datePosition);
+        outState.putInt(CURRENT_LOCATION_KEY, locationPosition);
         super.onSaveInstanceState(outState);
     }
 
-
-
-    private void showWeatherDetails() {
+    private void showWeatherDetails(boolean onlyLandscape) {
 
         // При горизонтальной ориентации, загоняем нужный фрагмент в правую часть экрана
         if (isOrientationLandscape) {
             WeatherDetailsFragment infoFragment = (WeatherDetailsFragment) Objects.requireNonNull(getFragmentManager()).findFragmentById(R.id.weather_details);
 
             // Перегружаем инфо, если оно еще не выведено или отличается от того, что мы хотим увидеть
-            if (infoFragment == null || infoFragment.getIndex() != currentPosition) {
+            if (infoFragment == null || infoFragment.getIndex() != datePosition) {
                 infoFragment = WeatherDetailsFragment.create(getDataPack());
 
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -91,15 +100,18 @@ public class DatesFragment extends Fragment implements RVClickListener {
 
                 ft.addToBackStack("SomeKey");
                 ft.commit();
+
             }
 
         // При вертикальной ориентации, запускаем фрагмент в новой активити
         } else {
-            Intent intent = new Intent();
-            intent.setClass(Objects.requireNonNull(getActivity()), WeatherDetailsActivity.class);
+            if (!onlyLandscape) {
+                Intent intent = new Intent();
+                intent.setClass(Objects.requireNonNull(getActivity()), WeatherDetailsActivity.class);
 
-            intent.putExtra(DATA_PACK_PASSED_TO_ACTIVITY_KEY, getDataPack());
-            startActivity(intent);
+                intent.putExtra(DATA_PACK_PASSED_TO_ACTIVITY_KEY, getDataPack());
+                startActivity(intent);
+            }
         }
 
     }
@@ -118,19 +130,21 @@ public class DatesFragment extends Fragment implements RVClickListener {
      }
 
     private DataPack getDataPack() {
-        String[] cities = getResources().getStringArray(R.array.arr_city_list);
-        DataPack pack = MainActivity.getDataPack();
-        pack.setPosition(currentPosition);
-        if (pack.getCityName().equals("")) {
-            pack.setCityName(cities[0]);
+        DataPack pack;
+        if (getArguments() != null) {
+            pack = (DataPack) getArguments().getSerializable("index");
+        } else {
+            pack = MainActivity.getDataPack();
+            pack.initLocations(getResources().getStringArray(R.array.arr_city_list));
         }
+        pack.setDatePosition(datePosition);
+
         return pack;
     }
 
     @Override
     public void onItemClicked(View v, int pos) {
-        currentPosition = pos;
-        showWeatherDetails();
-
+        datePosition = pos;
+        showWeatherDetails(false);
     }
 }

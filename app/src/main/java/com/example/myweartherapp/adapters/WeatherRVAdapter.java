@@ -31,6 +31,16 @@ public class WeatherRVAdapter extends RecyclerView.Adapter<WeatherRVAdapter.View
         rv = recyclerView;
     }
 
+    @Override
+    public void onViewAttachedToWindow(@NonNull ViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+        processSelection();
+    }
+
+    public void setCurrentPosition(int currentPosition) {
+        this.currentPosition = currentPosition;
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -41,8 +51,8 @@ public class WeatherRVAdapter extends RecyclerView.Adapter<WeatherRVAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         setItemText(holder, position);
-    }
 
+    }
 
     private void setItemText(@NonNull ViewHolder holder, int position) {
         String text = data.get(position);
@@ -62,11 +72,12 @@ public class WeatherRVAdapter extends RecyclerView.Adapter<WeatherRVAdapter.View
             super(itemView);
             textView = itemView.findViewById(R.id.rv_item_value);
             textView.setOnClickListener(this);
+
         }
 
         @Override
         public void onClick(View v) {
-            currentPosition = getLayoutPosition();
+            setCurrentPosition(getLayoutPosition());
             processSelection();
             lsnr.onItemClicked(v, currentPosition);
 
@@ -74,14 +85,18 @@ public class WeatherRVAdapter extends RecyclerView.Adapter<WeatherRVAdapter.View
     }
 
     public void processSelection() {
-        if (rv != null && currentPosition != -1) {
-            rv.getChildAt(currentPosition).setBackgroundColor(Color.MAGENTA);
-
-            for (int i = 0; i < rv.getChildCount(); i++) {
-                if (i != currentPosition) {
-                    rv.getChildAt(i).setBackgroundColor(Color.TRANSPARENT);
+        if (rv != null) {
+            if (currentPosition == -1) {
+                highlight(0);
+            } else {
+                for (int i = 0; i < rv.getChildCount(); i++) {
+                    highlight(i);
                 }
             }
         }
+    }
+
+    private void highlight(int position) {
+        rv.getChildAt(position).setBackgroundColor((position == currentPosition || (currentPosition == -1 && position == 0)) ? Color.MAGENTA : Color.TRANSPARENT);
     }
 }
