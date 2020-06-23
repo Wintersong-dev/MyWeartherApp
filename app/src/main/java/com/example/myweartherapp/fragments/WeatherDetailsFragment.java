@@ -1,11 +1,14 @@
 package com.example.myweartherapp.fragments;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,7 +16,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.myweartherapp.DataPack;
+import com.example.myweartherapp.NetworkingAgent;
 import com.example.myweartherapp.R;
+import com.example.myweartherapp.WeatherData;
 import com.example.myweartherapp.activities.HistoryActivity;
 import com.example.myweartherapp.activities.LocationActivity;
 import com.example.myweartherapp.activities.MainActivity;
@@ -24,8 +29,15 @@ public class WeatherDetailsFragment extends Fragment {
 
     private TextView dateTextView;
     private TextView locationTextView;
+    private TextView degreesTextView;
+    private TextView humidityTextView;
+    private TextView falloutTextView;
+    private TextView pressureTextView;
+    private TextView errorTextView;
+    private ImageView iconImageView;
+
+
     private int datePosition = 0;
-    private int locationPosition = 0;
     private DataPack arg = null;
 
     public static WeatherDetailsFragment create(DataPack container) {
@@ -66,17 +78,49 @@ public class WeatherDetailsFragment extends Fragment {
         initDataPack();
         if (arg != null) {
             setDatePosition(arg.getDatePosition());
-            setLocationPosition(arg.getLocationPosition());
         } else {
-            datePosition = 0;
-            locationPosition = 0;
+            setDatePosition(0);
             Log.d(LOG_TAG, "Ding!");
         }
     }
 
     private void alterData() {
+        String resultText;
+        WeatherData data;
+        data = NetworkingAgent.getRemoteData(arg.getLocation());
+
         dateTextView.setText(getDateText());
         locationTextView.setText(arg.getLocation());
+
+        if (!data.getErrCode().equals("")) {
+            errorTextView.setText(data.getErrCode());
+            errorTextView.setVisibility(View.VISIBLE);
+
+            degreesTextView.setVisibility(View.GONE);
+            humidityTextView.setVisibility(View.GONE);
+            falloutTextView.setVisibility(View.GONE);
+            pressureTextView.setVisibility(View.GONE);
+            iconImageView.setVisibility(View.GONE);
+        } else {
+            errorTextView.setVisibility(View.GONE);
+
+            degreesTextView.setText(String.valueOf(data.getTemp()));
+            degreesTextView.setVisibility(View.VISIBLE);
+
+            resultText = "Отн. влажность: " + data.getHumidity() + "%";
+            humidityTextView.setText(resultText);
+            humidityTextView.setVisibility(View.VISIBLE);
+
+            falloutTextView.setText(data.getFallout());
+            falloutTextView.setVisibility(View.VISIBLE);
+
+            resultText = "Атм. давление: " + data.getPressure() + " мм р/с";
+            pressureTextView.setText(resultText);
+            pressureTextView.setVisibility(View.VISIBLE);
+            Log.d(LOG_TAG, "-> " + data.getIcon());
+            iconImageView.setImageResource(data.getIcon());
+            iconImageView.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setOnLocationChangeClickListener(View view) {
@@ -112,6 +156,12 @@ public class WeatherDetailsFragment extends Fragment {
     private void initViews(View view) {
         dateTextView = view.findViewById(R.id.tv_datetime);
         locationTextView = view.findViewById(R.id.tv_location);
+        degreesTextView = view.findViewById(R.id.tv_degrees);
+        humidityTextView = view.findViewById(R.id.tv_humidity);
+        falloutTextView = view.findViewById(R.id.tv_fallout);
+        pressureTextView = view.findViewById(R.id.tv_pressure);
+        errorTextView = view.findViewById(R.id.tv_error);
+        iconImageView = view.findViewById(R.id.iv_weather_icon);
     }
 
     public int getIndex() {
@@ -138,10 +188,6 @@ public class WeatherDetailsFragment extends Fragment {
 
     private String getDateText() {
         return getResources().getStringArray(R.array.arr_date_list)[datePosition];
-    }
-
-    private void setLocationPosition(int position) {
-        locationPosition = position;
     }
 
     private void setDatePosition(int position) {
